@@ -5,33 +5,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/risks")
+@RequestMapping("/risque")
 public class RiskController {
     @Autowired
     private RiskService riskService; // Assuming you have a RiskService defined
+        @PostMapping("/ajouter")
 
-    @PostMapping
     public Risk addRisk(@RequestBody Risk risk) {
         return riskService.save(risk);
     }
 
     @PutMapping("/{riskId}")
     public Risk updateRisk(@PathVariable int riskId, @RequestBody Risk risk) {
-        risk.setRiskId(riskId); // Set the risk ID based on the path variable
+        risk.setIdRisque(riskId); // Set the risk ID based on the path variable
         return riskService.update(risk);
     }
 
-    @DeleteMapping("/{riskId}")
+    @DeleteMapping ("/DeleteRisque/{idRisque}")
     public void deleteRisk(@PathVariable int riskId) {
         riskService.delete(riskId);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<Risk> getAllRisks() {
         return riskService.getAll();
     }
 
-    @GetMapping("/{riskId}")
+    @GetMapping("/getRisqueByIdRisque/{idRisque}")
     public Risk getRisk(@PathVariable int riskId) {
         return riskService.getById(riskId);
     }
