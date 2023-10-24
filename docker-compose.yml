@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  discovery-server:
+    build:
+      context: ./SpringEureka  # Chemin relatif vers le répertoire de votre application Eureka
+    ports:
+      - "8761:8761"
+    container_name: eureka-service
+    networks:
+      - test-network
+
+  api-gateway:
+    build:
+      context: ./APIGateway  # Chemin relatif vers le répertoire de votre application API Gateway
+    environment:
+    - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+    ports:
+      - "8762:8762"
+    container_name: api-gateway-service
+    depends_on:
+      - discovery-server
+    networks:
+      - test-network
+
+  user-management:
+    build:
+     context: ./MS-UserManagament
+    environment:
+    - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+    ports:
+      - "8088:8088"
+    container_name: user-management
+    depends_on:
+      - discovery-server
+      - api-gateway
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
