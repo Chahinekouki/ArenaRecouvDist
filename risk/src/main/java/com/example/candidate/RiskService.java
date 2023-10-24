@@ -2,8 +2,7 @@ package com.example.candidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
+ import java.util.List;
 
 @Service
 public class RiskService {
@@ -27,7 +26,7 @@ public class RiskService {
     }
 
     public Risk getById(int riskId) {
-        return riskRepository.findById(riskId).orElse(null);
+        return riskRepository.findById(riskId).get();
     }
 
 }
