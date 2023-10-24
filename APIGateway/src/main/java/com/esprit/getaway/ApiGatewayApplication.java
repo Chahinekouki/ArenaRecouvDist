@@ -21,6 +21,8 @@ public class ApiGatewayApplication {
 		return builder.routes()
 				.route("RecouvGTI", r -> r.path("/RecouvGTI/**", "/dossier", "/getalldossier")
 						.uri("http://localhost:8081/"))
+				.route("usermanagement", r -> r.path("/usermanagement/**", "/usermanagement/user/**", "")
+						.uri("http://localhost:8088/"))
 				.build();
 
 	}

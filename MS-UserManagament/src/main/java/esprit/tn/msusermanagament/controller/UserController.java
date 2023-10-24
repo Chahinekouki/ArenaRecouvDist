@@ -3,7 +3,11 @@ package esprit.tn.msusermanagament.controller;
 
 import esprit.tn.msusermanagament.entity.User;
 import esprit.tn.msusermanagament.service.IUserService;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +45,20 @@ public class UserController {
     }
 
     @GetMapping({"/getAll"})
-    public ResponseEntity<?> getUsers()
+    public ResponseEntity<?> getUsers(KeycloakAuthenticationToken auth)
     {
-        return userService.getUsers();
+        KeycloakPrincipal<KeycloakSecurityContext> principal = (KeycloakPrincipal<KeycloakSecurityContext>) auth.getPrincipal();
+        KeycloakSecurityContext context = principal.getKeycloakSecurityContext();
+        boolean hasUserRole = context.getToken().getRealmAccess().isUserInRole("admin");
+        if(hasUserRole){
+            return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>( HttpStatus.FORBIDDEN);
+        }
+
+
+
 
     }
 
