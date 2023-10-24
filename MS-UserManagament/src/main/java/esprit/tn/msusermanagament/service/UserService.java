@@ -38,11 +38,16 @@ public class UserService implements  IUserService {
 
     @PostConstruct
     public void initRoleAndUser() {
-        Role Directeur = new Role();
-        Directeur.setRoleName("Directeur Departement Informatique");
-        Directeur.setRoleDescription("Admin");
-        roleDao.save(Directeur);
+        Role user = new Role();
+        user.setRoleName("user");
+        user.setRoleDescription("user");
+        roleDao.save(user);
 
+
+        Role admin = new Role();
+        admin.setRoleName("admin");
+        admin.setRoleDescription("admin");
+        roleDao.save(admin);
 
         User adminUser = new User();
         adminUser.setId("1234");
@@ -53,11 +58,58 @@ public class UserService implements  IUserService {
         adminUser.setEmail("assyl.kriaa@gmail.com");
         adminUser.setTel("+21699000000");
         Set<Role> adminRoles = new HashSet<>();
-        adminRoles.add(Directeur);
+        adminRoles.add(admin);
         adminUser.setRole(adminRoles);
         userDao.save(adminUser);
 
+        User simpleUser = new User();
+        simpleUser.setId("12345");
+        simpleUser.setUserPassword(("chiheb123"));
+        simpleUser.setUserFirstName("chiheb");
+        simpleUser.setUserLastName("aroua");
+        simpleUser.setAdress("Urbain Nord");
+        simpleUser.setEmail("chiheb.aroua@gmail.com");
+        simpleUser.setTel("+21699000000");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(user);
+        simpleUser.setRole(userRoles);
+        userDao.save(simpleUser);
 
+        User simpleUser1 = new User();
+        simpleUser1.setId("123456");
+        simpleUser1.setUserPassword(("chahine123"));
+        simpleUser1.setUserFirstName("chahine");
+        simpleUser1.setUserLastName("kouki");
+        simpleUser1.setAdress("Urbain Nord");
+        simpleUser1.setEmail("chahine.kouki@gmail.com");
+        simpleUser1.setTel("+21699454400");
+        Set<Role> userRoles1 = new HashSet<>();
+        userRoles1.add(user);
+        simpleUser1.setRole(userRoles1);
+        userDao.save(simpleUser1);
+
+        User simpleUser2 = new User();
+        simpleUser2.setId("123478");
+        simpleUser2.setUserPassword(("chahine123"));
+        simpleUser2.setUserFirstName("chahine");
+        simpleUser2.setUserLastName("kouki");
+        simpleUser2.setAdress("Urbain Nord");
+        simpleUser2.setEmail("chahine.kouki@gmail.com");
+        simpleUser2.setTel("+21699454400");
+
+        simpleUser2.setRole(userRoles1);
+        userDao.save(simpleUser2);
+
+        User simpleUser3 = new User();
+        simpleUser3.setId("123478");
+        simpleUser3.setUserPassword(("fourat123"));
+        simpleUser3.setUserFirstName("fourat");
+        simpleUser3.setUserLastName("halaoua");
+        simpleUser3.setAdress("Urbain Nord");
+        simpleUser3.setEmail("fourat.halaoua@esprit.tn");
+        simpleUser3.setTel("+21699454490");
+        simpleUser3.setRole(userRoles1);
+        userDao.save(simpleUser3);
     }
     public ResponseEntity<?> getUsers( ) {
 
@@ -67,7 +119,7 @@ public class UserService implements  IUserService {
     }
 
     @Override
-    public ResponseEntity<?> signUp (User user , boolean isStaff ){
+    public ResponseEntity<?> signUp (User user  ){
         if (user.getId() ==null || user.getId().length() !=8  ) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("veuillez corriger le champs CIN");
         }
@@ -87,13 +139,13 @@ public class UserService implements  IUserService {
         }
 
         else {
-            if(!isStaff) {
-                Role role = roleDao.findById("Patient").get();
+
+                Role role = roleDao.findById("user").get();
 
                 Set<Role> userRoles = new HashSet<>();
                 userRoles.add(role);
                 user.setRole(userRoles);
-            }
+
             user.setUserPassword((user.getUserPassword()));
             userDao.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(user);

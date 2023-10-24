@@ -29,19 +29,12 @@ public class UserController {
 
     }
 
-    @PostMapping({"/signup"})
-    public ResponseEntity<?> registerNewUser(@RequestBody User user)
-    {
-       return userService.signUp(user,false);
-
-    }
-
 
     @PostMapping({"/addNew"})
 
     public ResponseEntity<?> addNewUser(@RequestBody User user)
     {
-        return userService.signUp(user,true);
+        return userService.signUp(user);
     }
 
     @GetMapping({"/getAll"})

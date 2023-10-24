@@ -8,7 +8,7 @@ public interface IUserService {
 
     public ResponseEntity<?> getUsers( );
 
-    public ResponseEntity<?> signUp(User user , boolean isStaff );
+    public ResponseEntity<?> signUp(User user  );
 
     public ResponseEntity<?> updateUser(User user ,String id );
 
