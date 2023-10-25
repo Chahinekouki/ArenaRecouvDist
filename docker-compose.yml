@@ -60,6 +60,20 @@ services:
       - test-network
       - user-network
 
+  risk:
+    container_name: Candidate-docker
+    image: "risk-managment"
+    build:
+      context: ./risk
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://serviceregistry:8761/eureka/
+    depends_on:
+      - discovery-server
+    networks:
+      - test-network
+
   mysqldb:
     image: mysql:8.0.13
     ports:

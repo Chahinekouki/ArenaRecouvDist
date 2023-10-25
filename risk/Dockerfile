@@ -1,4 +1,4 @@
 FROM openjdk
 EXPOSE 8082
-
-ENTRYPOINT ["java","-jar","risk-docker.jar"]
+ADD /target/Candidate-0.0.1-SNAPSHOT.jar Candidate-docker.jar
+ENTRYPOINT ["java","-jar","Candidate-docker.jar"]
