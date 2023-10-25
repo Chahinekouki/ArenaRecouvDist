@@ -1,39 +1,39 @@
 package com.example.candidate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/risks")
+@RequestMapping("/risque")  // Set the base path for this controller
 public class RiskController {
     @Autowired
-    private RiskService riskService; // Assuming you have a RiskService defined
+    private RiskService riskService;
 
-    @PostMapping
-    public Risk addRisk(@RequestBody Risk risk) {
+    @PostMapping("/ajouter")  // Endpoint: /risque/ajouter
+    public Risk addRisk(@RequestParam Risk risk) {
         return riskService.save(risk);
     }
 
-    @PutMapping("/{riskId}")
+    @PutMapping("/{riskId}")  // Endpoint: /risque/{riskId}
     public Risk updateRisk(@PathVariable int riskId, @RequestBody Risk risk) {
-        risk.setRiskId(riskId); // Set the risk ID based on the path variable
+        risk.setIdRisque(riskId);
         return riskService.update(risk);
     }
 
-    @DeleteMapping("/{riskId}")
+    @DeleteMapping("/DeleteRisque/{riskId}")  // Endpoint: /risque/{riskId}
     public void deleteRisk(@PathVariable int riskId) {
         riskService.delete(riskId);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")  // Endpoint: /risque/getAll
     public List<Risk> getAllRisks() {
         return riskService.getAll();
     }
 
-    @GetMapping("/{riskId}")
+    @GetMapping("/getRisqueByIdRisque/{riskId}")  // Endpoint: /risque/{riskId}
     public Risk getRisk(@PathVariable int riskId) {
         return riskService.getById(riskId);
     }
-
 }
