@@ -22,14 +22,29 @@ services:
     networks:
       - test-network
 
+
+  consultation-management:
+    build:
+      context: ./ConsultationGenerale
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+    ports:
+      - "8081:8081"
+    container_name: cgenerale-img-docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+    networks:
+      - test-network
+
   user-management:
     build:
-     context: ./MS-UserManagament
+      context: ./MS-UserManagament
     environment:
-    - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
     ports:
       - "8088:8088"
-    container_name: user-management
+    container_name: user-img-docker
     depends_on:
       - discovery-server
       - api-gateway
