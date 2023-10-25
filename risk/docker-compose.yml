@@ -3,9 +3,9 @@ services:
 
 
   Candidat:
-    container_name: candidat
-    image: "candidat"
-    build: .\CandidateMS
+    container_name: risk-managment
+    image: "risk-managment"
+    build: .\
     ports:
       - "8082:8082"
     environment:

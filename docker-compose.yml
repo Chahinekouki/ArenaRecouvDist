@@ -2,7 +2,7 @@ version: '3.9'
 services:
   discovery-server:
     build:
-      context: ./SpringEureka  # Chemin relatif vers le répertoire de votre application Eureka
+      context: ./SpringEureka
     ports:
       - "8761:8761"
     container_name: eureka-service
@@ -11,9 +11,9 @@ services:
 
   api-gateway:
     build:
-      context: ./APIGateway  # Chemin relatif vers le répertoire de votre application API Gateway
+      context: ./APIGateway
     environment:
-    - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
     ports:
       - "8762:8762"
     container_name: api-gateway-service
@@ -22,20 +22,74 @@ services:
     networks:
       - test-network
 
-  user-management:
+  consultation-management:
     build:
-     context: ./MS-UserManagament
+      context: ./ConsultationGenerale
     environment:
-    - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+      - MYSQL_HOST=mysqldb
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_PORT=3306
     ports:
-      - "8088:8088"
-    container_name: user-management
+      - "9090:8081"
+    container_name: cgenerale-img-docker
     depends_on:
       - discovery-server
       - api-gateway
     networks:
       - test-network
+      - spring-network
+
+  user-management:
+    build:
+      context: ./MS-UserManagament
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://discovery-server:8761/eureka
+      - MYSQL_HOST=mysqldbuser
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_PORT=3306
+    ports:
+      - "9091:8088"
+    container_name: user-img-docker
+    depends_on:
+      - discovery-server
+      - api-gateway
+    networks:
+      - test-network
+      - user-network
+
+  mysqldb:
+    image: mysql:8.0.13
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=recouvdb
+    container_name: mysqldb
+    networks:
+      - test-network
+      - spring-network
+
+  mysqldbuser:
+    image: mysql:8.0.13
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=user
+    container_name: mysqldbuser
+    networks:
+      - test-network
+      - user-network
 
 networks:
   test-network:
+    driver: bridge
+
+  user-network:
+    driver: bridge
+
+  spring-network:
     driver: bridge

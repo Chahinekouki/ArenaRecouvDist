@@ -20,9 +20,9 @@ public class ApiGatewayApplication {
 	public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
 		return builder.routes()
 				.route("RecouvGTI", r -> r.path("/RecouvGTI/**", "/dossier", "/getalldossier")
-						.uri("http://localhost:8081/"))
+						.uri("http://localhost:9090/"))
 				.route("usermanagement", r -> r.path("/usermanagement/**", "/usermanagement/user/**", "")
-						.uri("http://localhost:8088/"))
+						.uri("http://localhost:9091/"))
 				.build();
 
 	}
