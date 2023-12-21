@@ -10,3 +10,4 @@ Architecture Distribuée : ArenaRecouvDist adopte une approche distribuée basé
 - Keycloack
 - Database : MySql / H2 /MongoDB
 # Architecture globale de l'application 
+![Architectuer globale](./Dist.PNG)
